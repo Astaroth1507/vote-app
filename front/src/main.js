@@ -3,13 +3,19 @@ import App from './App.vue'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faWallet } from '@fortawesome/free-solid-svg-icons'
+import { faWallet, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import store from "./store"
 
-library.add(faWallet)
-Vue.use(Buefy)
+// Agrega los íconos que necesitas de FontAwesome a la biblioteca
+library.add(faWallet, faUser)
 
+// Configura Buefy para usar FontAwesome como el paquete de íconos
+Vue.use(Buefy, {
+  defaultIconPack: 'fas'  // Especifica 'fas' para FontAwesome
+})
+
+// Registra el componente de FontAwesome para usarlo en toda la app
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
