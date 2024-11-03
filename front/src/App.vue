@@ -1,33 +1,24 @@
 <template lang="pug">
   #app
     section.hero.hero-muni-fraijanes
-      img.logo-muni-fraijanes(src="https://yt3.googleusercontent.com/ytc/AIdro_mmcuuma3Zh1DobRxnqfW2_mAo_jGgG1uLzUfkIMMtHwQE=s900-c-k-c0x00ffffff-no-rj" alt="logo image")
 
       .hero-head
         nav.navbar
           .container
-            .navbar-brand
-              p.navbar-item.color-text
-                span
-                span.navbar-burger(@click="isMenuActive = !isMenuActive" :class="{ 'is-active': isMenuActive }")
-                span
-                span
-                span
-            #navbarMenuHeroA.navbar-menu(:class="{ 'is-active': isMenuActive }")
+            #navbarMenuHeroA.navbar-menu.is-active
               .navbar-end
                 span.navbar-item
-                  span.account-number {{account}}
-                span.navbar-item(v-if="!isLogged")
-                  a.button.is-primary.is-inverted(@click="connect")
-                    span.icon
+                  b-button(type="is-success" v-if="isLogged") Conectado
+                  a.button.is-primary.is-inverted(@click="connect" v-if="!isLogged")
+                    span.icon.icon-wallet-connect
                       font-awesome-icon(icon="wallet")
-                    span Conectar la billetera electronica
+                    span Conectar
       
 
     .container.main-title-container
       h1.main-title Sistema de votación electrónica Municipalidad de Fraijanes
       
-    .container.mt-16
+    .container.mt-16.principal-container
       .columns
         .column.is-10.is-offset-1
           b-message.vote-warning-message(type="is-warning" v-if="voteInfo.voted") Ya has votado
@@ -51,7 +42,7 @@
                     .media-content.has-text-centered
                       p.title.is-4 {{ proposal.name }}
                       
-                  b-button(type='is-primary' @click="vote(index)" :disabled="voteInfo.voted") Votar
+                      b-button(type='is-primary' @click="vote(index)" :disabled="voteInfo.voted" v-if="!isAdmin") Votar 
 
           // Resultados visibles solo para el administrador
           .vote-results(v-if="isAdmin")
@@ -64,6 +55,11 @@
             .admin-buttons-container
               b-button.admin-button(type="is-warning" @click="resetVotes") Reiniciar Votación
               b-button.admin-button(type="is-danger" @click="clearProposals") Eliminar Propuestas
+
+      footer.footer
+        .content.has-text-centered
+          p © 2024 Municipalidad de Fraijanes. Todos los derechos reservados.
+
 </template>
 
 <script>
@@ -250,7 +246,7 @@ export default {
 =========================== */
 .hero.hero-muni-fraijanes {
   background: linear-gradient(to right, green 33.33%, white 33.33%, white 66.66%, red 66.66%);
-  min-height: 25vh;
+  min-height: 10vh;
   position: relative;
 }
 
@@ -486,6 +482,15 @@ export default {
 /* Estilos en celulares */
 @media screen and (max-width: 768px) {
 
+  .navbar-end {
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+  }
+  .navbar-item {
+    width: auto;
+  }
+
   .navbar-menu.is-active {
     position: absolute;
     width: 100%;
@@ -507,7 +512,7 @@ export default {
     margin: 0.5rem 0;
   }
   .hero.hero-muni-fraijanes {
-    min-height: 20vh;
+    min-height: 10vh;
   }
 
   .logo-muni-fraijanes {
@@ -556,15 +561,17 @@ export default {
 
   .navbar-menu.is-active {
     position: absolute;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    padding: 1rem;
+    width: fit-content;
+    background-color: transparent;
+    padding: 0rem;
     z-index: 100;
+    box-shadow: none;
   }
 
   .navbar-menu.is-active .navbar-item {
     color: white;
     text-align: center;
+    padding: 0;
   }
 
   .admin-buttons-container {
@@ -606,6 +613,7 @@ export default {
 
 .navbar-menu.is-active {
   display: block; /* Asegura que el menú sea visible cuando está activo */
+  padding: 0;
 }
 
 .navbar-end .navbar-item {
@@ -621,6 +629,49 @@ export default {
   width: 100%;
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-menu {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end; /* Sitúa los elementos a la derecha */
+}
+
+.navbar-end {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-end .navbar-item {
+  white-space: pre-wrap; /* Permite salto de línea si la cuenta es larga */
+  text-align: right; /* Asegura que el contenido esté alineado a la derecha */
+}
+
+#navbarMenuHeroA.navbar-menu.is-active {
+  position: fixed;
+  bottom: 10px;
+  right: 15px;
+}
+
+.footer{
+  background-color: aliceblue;
+  width: 100%;
+}
+ #app{
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows:auto 1fr auto ;
+  width: 100%;
+ }
+
+ .container.mt-16.principal-container{
+  width: 100%;
+  max-width: 100%;
+ }
 </style>
 
 
